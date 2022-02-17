@@ -11,7 +11,7 @@ export default {
 
 <script setup>
 import axios from "axios";
-import { ref, provide, reactive, onMounted, watch } from "vue";
+import { ref, provide, onMounted, watch, computed, readonly } from "vue";
 const titleName = "Phonebook";
 
 const contacts = ref([]);
@@ -39,8 +39,10 @@ const addContact = (e) => {
   e.target.reset();
 };
 
-const visibleContacts = reactive(contacts);
 const filter = ref("");
+const visibleContacts = computed(() =>
+  contacts.value.filter((contact) => contact.name.includes(filter.value))
+);
 
 watch(filter, () => {
   visibleContacts.value = [...contacts.value].filter((contact) =>
@@ -50,7 +52,7 @@ watch(filter, () => {
 
 provide("contacts", contacts);
 provide("addContact", addContact);
-provide("visibleContacts", visibleContacts);
+provide("visibleContacts", readonly(visibleContacts));
 provide("filter", filter);
 </script>
 
