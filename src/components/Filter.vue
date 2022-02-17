@@ -1,26 +1,17 @@
 <script setup>
 import { inject } from "vue";
 
-const contacts = inject("contacts");
-const visibleContacts = inject("visibleContacts");
+let filter = inject("filter");
 
-const changeFilter = (e) => {
-  const filter = e.target.value;
-  console.log(filter);
-
-  visibleContacts.value = [...visibleContacts.value].filter((el) =>
-    el.name.includes(filter)
-  );
-
-  console.log(contacts.value);
-  console.log(visibleContacts.value);
+const changeFilterValue = (e) => {
+  filter.value = e.target.value;
 };
 </script>
 
 <template>
   <div class="wrapper">
     <h3 class="title">Filter</h3>
-    <input type="text" @input="changeFilter" />
+    <input type="text" @input="changeFilterValue" />
   </div>
 </template>
 

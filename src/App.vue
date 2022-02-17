@@ -11,16 +11,17 @@ export default {
 
 <script setup>
 import axios from "axios";
-import { ref, provide, reactive } from "vue";
+import { ref, provide, reactive, onMounted, watch } from "vue";
 const titleName = "Phonebook";
 
 const contacts = ref([]);
 
-axios
-  .get("https://61e92eaa7bc0550017bc60f7.mockapi.io/contacts")
-  .then((res) => {
-    contacts.value = [...res.data];
-  });
+onMounted(async () => {
+  const response = await axios.get(
+    "https://61e92eaa7bc0550017bc60f7.mockapi.io/contacts"
+  );
+  contacts.value = [...response.data];
+});
 
 const addContact = (e) => {
   const newContact = {
@@ -39,10 +40,18 @@ const addContact = (e) => {
 };
 
 const visibleContacts = reactive(contacts);
+const filter = ref("");
+
+watch(filter, () => {
+  visibleContacts.value = [...contacts.value].filter((contact) =>
+    contact.name.includes(filter.value)
+  );
+});
 
 provide("contacts", contacts);
 provide("addContact", addContact);
 provide("visibleContacts", visibleContacts);
+provide("filter", filter);
 </script>
 
 <template>
