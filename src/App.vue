@@ -44,7 +44,7 @@ const filter = ref("");
 
 watch(filter, () => {
   visibleContacts.value = [...contacts.value].filter((contact) =>
-    contact.name.includes(filter.value)
+    contact.name.toLowerCase().includes(filter.value)
   );
 });
 

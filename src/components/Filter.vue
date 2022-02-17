@@ -4,7 +4,7 @@ import { inject } from "vue";
 let filter = inject("filter");
 
 const changeFilterValue = (e) => {
-  filter.value = e.target.value;
+  filter.value = e.target.value?.toLowerCase();
 };
 </script>
 
